@@ -1,5 +1,7 @@
 #pragma once
 
+#include "typedefs.h"
+
 enum class NodeType
 {
     CONST,
@@ -7,10 +9,9 @@ enum class NodeType
     NEURON,
 };
 
-template <typename T>
 class Node
 {
 public:
-    virtual const T value() const = 0;
+    virtual const snn::float_t value() const = 0;
     virtual const NodeType type() const = 0;
 };

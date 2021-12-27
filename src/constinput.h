@@ -1,9 +1,12 @@
+#pragma once
+
 #include "node.h"
 
-template <typename T>
-class ConstInput : public Node<T>
+#include "typedefs.h"
+
+class ConstInput : public Node
 {
 public:
-    virtual const T value() const { return 1; }
+    virtual const snn::float_t value() const { return 1; }
     virtual const NodeType type() const { return NodeType::CONST; };
 };

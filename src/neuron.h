@@ -1,16 +1,28 @@
 #pragma once
 
-#include <array>
+#include <vector>
+#include <cstdlib>
 
+#include "typedefs.h"
 #include "node.h"
+#include "constinput.h"
 
 namespace snn
 {
-    template <typename T>
-    const T fastSig(T input);
+    const snn::float_t fastSig(snn::float_t input);
 
-    template <typename T, unsigned NodesAmount>
-    class Neuron : public Node<T>
+    struct WeightedNode
+    {
+        Node* node;
+        snn::float_t weight = 1;
+
+        snn::float_t value() const
+        { 
+            return node->value() * weight;
+        }
+    };
+
+    class Neuron : public Node
     {
     public:
         enum ActivationType
@@ -18,14 +30,14 @@ namespace snn
             SIGMOID
         };
 
-        explicit Neuron();
+        explicit Neuron(size_t inputs);
         virtual ~Neuron() = default;
 
-        virtual const T value() const override;
+        virtual const snn::float_t value() const override;
         virtual const NodeType type() const override;
 
-        const Node<T>* input(unsigned i) const;
-        void setInput(Node<T>* node, unsigned i);
+        const Node* input(size_t i) const;
+        void setInput(Node* node, size_t i);
 
         void setActivationType(ActivationType type);
         ActivationType activationType() const;
@@ -33,13 +45,12 @@ namespace snn
         void calculate();
 
     private:
-        std::array<Node<T>*, NodesAmount> _inputs;
-        std::array<T, NodesAmount> _weights;
+        static ConstInput sConstInput;
 
-        T _value = 0;
+        std::vector<WeightedNode> _weightedNodes;
+
+        snn::float_t _value = 0;
 
         ActivationType _activationType = SIGMOID;
     };
 };
-
-#include "neuron.inl"

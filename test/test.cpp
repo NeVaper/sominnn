@@ -9,7 +9,7 @@ bool neuron_creation()
     std::cout << "Neuron creation.\n";
     
     bool passed = true;
-    snn::Neuron<float, 32> neuron;
+    snn::Neuron neuron(32);
 
     std::cout << "Neuron creation passed.\n";
     return passed;
@@ -21,8 +21,8 @@ bool neuron_calculation()
 
     constexpr size_t inAmount = 32;
 
-    std::array<ConstInput<float>, inAmount> inputs;
-    snn::Neuron<float, inAmount> neuron;
+    std::array<ConstInput, inAmount> inputs;
+    snn::Neuron neuron(inAmount);
     neuron.setActivationType(neuron.SIGMOID);
 
     for (size_t i = 0; i < inAmount; ++i)
@@ -32,7 +32,7 @@ bool neuron_calculation()
 
     neuron.calculate();
 
-    bool passed = neuron.value() == snn::fastSig<float>(inAmount);
+    bool passed = neuron.value() == snn::fastSig(inAmount + 1);
 
     if (passed) std::cout << "Neuron calculation passed.\n";
     else std::cout << "Neuron calculation FAIL.\n";
