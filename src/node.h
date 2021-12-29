@@ -2,6 +2,9 @@
 
 #include "typedefs.h"
 
+namespace snn
+{
+
 enum class NodeType
 {
     CONST,
@@ -14,4 +17,6 @@ class Node
 public:
     virtual const snn::float_t value() const = 0;
     virtual const NodeType type() const = 0;
+};
+
 };

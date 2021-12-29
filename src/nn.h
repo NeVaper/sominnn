@@ -1,23 +1,23 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
-#include "neuron.h"
+#include "node.h"
 #include "typedefs.h"
 
 namespace snn
 {
 
-class SNN
+class NN
 {
 public:
-    explicit SNN(std::vector<size_t> layers);
+    explicit NN(const std::vector<size_t> &layers);
 
-    void setInputValues(std::vector<snn::float_t> inputValues);
+    void setInputValues(const std::vector<snn::float_t> inputValues);
 
-
+private:
+    std::vector<std::vector<std::unique_ptr<Node>>> _layers; 
 };
 
 };
-
-#include "nn.inl"

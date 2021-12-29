@@ -1,5 +1,6 @@
 #include "../src/neuron.h"
 #include "../src/constinput.h"
+#include "../src/nn.h"
 
 #include <iostream>
 #include <array>
@@ -21,7 +22,7 @@ bool neuron_calculation()
 
     constexpr size_t inAmount = 32;
 
-    std::array<ConstInput, inAmount> inputs;
+    std::array<snn::ConstInput, inAmount> inputs;
     snn::Neuron neuron(inAmount);
     neuron.setActivationType(neuron.SIGMOID);
 
@@ -40,12 +41,28 @@ bool neuron_calculation()
     return passed;
 }
 
+bool nn_creation()
+{
+    std::cout << "NN creation.\n";
+    
+    bool passed = true;
+    snn::NN neuron({ 3, 5, 5, 10, 100 });
+
+    std::cout << "NN creation passed.\n";
+    return passed;
+}
+
 int main()
 {
+    std::cout << "\n--__TESTS__--------------------\n";
+
     bool passed = true;
     passed &= neuron_creation();
     passed &= neuron_calculation();
+    passed &= nn_creation();
 
     if (passed) std::cout << "All passed.\n";
     else std::cout << "THERE ARE FAILS.\n";
+
+    std::cout << "--__FINISHED__-----------------\n\n";
 }
