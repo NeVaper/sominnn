@@ -1,5 +1,6 @@
 #pragma once
 
+#include "node.h"
 #include "typedefs.h"
 
 namespace snn
@@ -13,8 +14,8 @@ public:
 
     void setValue(snn::float_t value) { _value = value; }
 
-private:
-    snn::float_t _value = 0;
+  private:
+    snn::float_t _value = 1;
 };
 
 };

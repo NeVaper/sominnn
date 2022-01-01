@@ -36,15 +36,18 @@ namespace snn
         virtual const snn::float_t value() const override;
         virtual const NodeType type() const override;
 
-        const Node* input(size_t i) const;
-        void setInput(Node* node, size_t i);
+        void setInput(Node *node, size_t i);
+
+        std::vector<snn::float_t> weights() const;
 
         void setActivationType(ActivationType type);
         ActivationType activationType() const;
 
         void calculate();
 
-    private:
+      private:
+        const Node *input(size_t i) const;
+
         static ConstInput sConstInput;
 
         std::vector<WeightedNode> _weightedNodes;

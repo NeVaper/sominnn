@@ -9,7 +9,7 @@ set(TEST ${LIB}_test)
 project(${PROJECT_NAME})
 
 file(GLOB SRC_CPP src/*.cpp)
-file(GLOB INC_CPP src/*.h src/*.inl)
+file(GLOB INC_CPP src/*.h)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -42,9 +42,4 @@ add_compile_options(
     -Wredundant-decls
     -Wsign-conversion
     -Wsign-promo
-)
-
-add_custom_command(TARGET ${TEST}
-    POST_BUILD
-    COMMAND ./${TEST}
 )

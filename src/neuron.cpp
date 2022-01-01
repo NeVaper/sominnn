@@ -22,9 +22,16 @@ const snn::float_t Neuron::value() const
     return _value;
 }
 
-const NodeType Neuron::type() const
-{
-    return NodeType::NEURON;
+const NodeType Neuron::type() const { return NodeType::NEURON; }
+
+std::vector<snn::float_t> Neuron::weights() const {
+  std::vector<snn::float_t> weights;
+  weights.reserve(_weightedNodes.size());
+
+  for (const auto &wn : _weightedNodes)
+    weights.push_back(wn.weight);
+
+  return weights;
 }
 
 void Neuron::calculate()
