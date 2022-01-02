@@ -1,16 +1,10 @@
 #include "neuron.h"
 
-#include <cmath>
 #include <stdexcept>
 
 using namespace snn;
 
 ConstInput Neuron::sConstInput = {};
-
-const snn::float_t snn::fastSig(snn::float_t value)
-{
-    return value / (1 + std::fabs(value));
-}
 
 Neuron::Neuron(size_t inputs)
 {
@@ -35,6 +29,8 @@ std::vector<snn::float_t> Neuron::weights() const {
   return weights;
 }
 
+void Neuron::setActivation(Activation *act) { _activation.reset(act); }
+
 void Neuron::calculate()
 {
     _value = 0;
@@ -44,26 +40,7 @@ void Neuron::calculate()
         _value += wn.value();
     }
 
-    switch (_activationType)
-    {
-    case Neuron::SIGMOID:
-        _value = fastSig(_value);
-        break;
-    
-    default:
-        throw;
-    }
-}
-
-void Neuron::setActivationType(ActivationType type)
-{
-    _activationType = type;
-}
-
-typename Neuron::ActivationType 
-    Neuron::activationType() const
-{
-    return _activationType;
+    _value = _activation->activate(_value);
 }
 
 const Node *Neuron::input(size_t i) const { return _weightedNodes[i].node; }

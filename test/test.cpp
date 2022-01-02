@@ -1,3 +1,4 @@
+#include "../src/activation.h"
 #include "../src/constinput.h"
 #include "../src/neuron.h"
 #include "../src/nn.h"
@@ -40,7 +41,6 @@ bool neuron_calculation() {
 
   std::array<snn::ConstInput, inAmount> inputs;
   snn::Neuron neuron(inAmount);
-  neuron.setActivationType(neuron.SIGMOID);
 
   for (size_t i = 0; i < inAmount; ++i) {
     neuron.setInput(&inputs[i], i);
@@ -48,7 +48,8 @@ bool neuron_calculation() {
 
   neuron.calculate();
 
-  bool passed = neuron.value() == snn::fastSig(inAmount + 1);
+  snn::ActivationFastSigmoid fs;
+  bool passed = neuron.value() == fs.activate(inAmount + 1);
 
   if (passed)
     std::cout << "Neuron calculation passed.\n";
@@ -77,7 +78,8 @@ bool nn_calculation() {
 
   const auto output = nn.readOutput();
 
-  const auto val = snn::fastSig(snn::fastSig(4) * 5 + 1);
+  snn::ActivationFastSigmoid fs;
+  const auto val = fs.activate(fs.activate(4) * 5 + 1);
 
   passed &= (output == decltype(output){val, val, val});
 
