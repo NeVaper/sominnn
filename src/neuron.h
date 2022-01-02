@@ -37,6 +37,8 @@ namespace snn
         virtual const NodeType type() const override;
 
         void setInput(Node *node, size_t i);
+        void setWeight(size_t i, snn::float_t weight);
+        void setWeights(const std::vector<float_t> &weights);
 
         std::vector<snn::float_t> weights() const;
 
@@ -46,9 +48,9 @@ namespace snn
         void calculate();
 
       private:
-        const Node *input(size_t i) const;
-
         static ConstInput sConstInput;
+
+        const Node *input(size_t i) const;
 
         std::vector<WeightedNode> _weightedNodes;
 

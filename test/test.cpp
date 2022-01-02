@@ -4,6 +4,24 @@
 
 #include <array>
 #include <iostream>
+#include <random>
+#include <sstream>
+
+namespace {
+template <typename Numeric, typename Generator = std::mt19937>
+Numeric random(Numeric from, Numeric to) {
+  thread_local static Generator gen(std::random_device{}());
+
+  using dist_type =
+      typename std::conditional<std::is_integral<Numeric>::value,
+                                std::uniform_int_distribution<Numeric>,
+                                std::uniform_real_distribution<Numeric> >::type;
+
+  thread_local static dist_type dist;
+
+  return dist(gen, typename dist_type::param_type{from, to});
+}
+} // namespace
 
 bool neuron_creation() {
   std::cout << "Neuron creation.\n";
@@ -74,10 +92,19 @@ bool nn_serialization() {
   std::cout << "NN serialization.\n";
 
   bool passed = true;
-  snn::NN nn({3, 5, 3});
+  snn::NN nn({3, 5, 3}, true);
   nn.calculate();
 
-  std::cout << '\n' << nn.toString() << '\n';
+  std::stringstream ss;
+  nn.toStream(ss);
+
+  snn::NN nn1(ss);
+  nn1.calculate();
+
+  const auto nnotp = nn.readOutput();
+  const auto nn1otp = nn1.readOutput();
+
+  passed = (nnotp == nn1otp);
 
   if (passed)
     std::cout << "NN serialization passed.\n";

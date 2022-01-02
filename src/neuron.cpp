@@ -1,6 +1,7 @@
 #include "neuron.h"
 
 #include <cmath>
+#include <stdexcept>
 
 using namespace snn;
 
@@ -65,9 +66,19 @@ typename Neuron::ActivationType
     return _activationType;
 }
 
-const Node* Neuron::input(size_t i) const
-{
-    return _weightedNodes[i].node;
+const Node *Neuron::input(size_t i) const { return _weightedNodes[i].node; }
+
+void Neuron::setWeight(size_t i, float_t weight) {
+  _weightedNodes[i].weight = weight;
+}
+
+void Neuron::setWeights(const std::vector<float_t> &weights) {
+  if (weights.size() != _weightedNodes.size())
+    throw std::invalid_argument{
+        "Neuron::setWeights. Amount of weights mismatch."};
+
+  for (size_t i = 0; i < weights.size(); ++i)
+    setWeight(i, weights[i]);
 }
 
 void Neuron::setInput(Node* node, size_t i)

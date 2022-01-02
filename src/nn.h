@@ -13,18 +13,20 @@ namespace snn
 class NN
 {
 public:
-    explicit NN(const std::vector<size_t> &layers);
+  explicit NN(const std::vector<size_t> &layersWidths, bool randomize = false);
+  explicit NN(std::istream &is);
 
-    void setInputValues(const std::vector<snn::float_t> &inputValues);
-    void calculate();
+  void setInputValues(const std::vector<snn::float_t> &inputValues);
+  void calculate();
 
-    const std::string toString() const;
-    void fromString(const std::string &str);
+  void toStream(std::ostream &os) const;
+  void fromStream(std::istream &is);
 
-    const std::vector<snn::float_t> readOutput() const;
+  const std::vector<snn::float_t> readOutput() const;
 
-  private:
-    std::vector<std::vector<std::unique_ptr<Node>>> _layers; 
+private:
+  void setup(const std::vector<size_t> &layersWidths, bool randomize = false);
+
+  std::vector<std::vector<std::unique_ptr<Node>>> _layers;
 };
-
-};
+}; // namespace snn
